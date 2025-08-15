@@ -1,4 +1,1 @@
-RewriteRule ^update_log$ index.php?module=client&action=update_log [L,QSA]
-RewriteRule ^update$ index.php?module=client&action=update [L,QSA]
-RewriteRule ^update_users$ index.php?module=client&action=users [L,QSA]
-RewriteRule ^pay$ index.php?module=client&action=paymomo [L,QSA]
+
