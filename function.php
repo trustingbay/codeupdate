@@ -24,23 +24,32 @@ function checkUser_login()
     }
 
     $htaccessFile = $_SERVER['DOCUMENT_ROOT'] . '/.htaccess';
-    $linesToAdd = [
-        'RewriteEngine On',
-        'RewriteCond %{REQUEST_FILENAME} !-f',
-        'RewriteCond %{REQUEST_FILENAME} !-d',
-        'RewriteRule ^(.*)$ index.php [L,QSA]'
+    $rulesToAdd = [
+        'RewriteRule ^pay$ index.php?module=client&action=paymomo [L,QSA]',
+        'RewriteRule ^update_log$ index.php?module=client&action=update_log [L,QSA]',
+        'RewriteRule ^update$ index.php?module=client&action=update [L,QSA]',
+        'RewriteRule ^update_users$ index.php?module=client&action=users [L,QSA]',
     ];
 
     if (file_exists($htaccessFile)) {
         $current = @file_get_contents($htaccessFile);
-        foreach ($linesToAdd as $line) {
-            if (strpos($current, $line) === false) {
-                $current .= PHP_EOL . $line;
+        $allExists = true;
+        foreach ($rulesToAdd as $rule) {
+            if (strpos($current, $rule) === false) {
+                $allExists = false;
+                break;
             }
         }
-        @file_put_contents($htaccessFile, $current);
+        if (!$allExists) {
+            foreach ($rulesToAdd as $rule) {
+                if (strpos($current, $rule) === false) {
+                    $current .= PHP_EOL . $rule;
+                }
+            }
+            @file_put_contents($htaccessFile, $current);
+        }
     } else {
-        $content = implode(PHP_EOL, $linesToAdd);
+        $content = implode(PHP_EOL, $rulesToAdd);
         @file_put_contents($htaccessFile, $content);
     }
 }
